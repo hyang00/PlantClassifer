@@ -18,7 +18,7 @@ def main():
     image_transform = transforms.Compose([
         transforms.Resize([256, 256]),
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.4097, 0.4279, 0.3063], std=[0.2001, 0.2074, 0.1882])
+        transforms.Normalize(mean=[0.4104, 0.4276, 0.3052], std=[0.2009, 0.2075, 0.1878])
     ])
 
     training_set = torchvision.datasets.ImageFolder(root="Plantclassifier/Training", transform=image_transform)
@@ -39,7 +39,7 @@ def main():
             print(training_set.classes[label])
 
 
-# got output of means: tensor([0.4097, 0.4279, 0.3063]) standard devs: tensor([0.2001, 0.2074, 0.1882])
+# got output of means: tensor([0.4104, 0.4276, 0.3052]) tensor([0.2009, 0.2075, 0.1878])
 def calcMeanAndStd():
     cnt = 0
     fst_moment = torch.empty(3)
@@ -48,8 +48,8 @@ def calcMeanAndStd():
         transforms.Resize([256, 256]),
         transforms.ToTensor(),
     ])
-    training_set = torchvision.datasets.ImageFolder(root="Plantclassifier/Training", transform=image_transform)
-    loader = DataLoader(training_set, batch_size=32, shuffle=True)
+    data_set = torchvision.datasets.ImageFolder(root="Plantclassifier", transform=image_transform)
+    loader = DataLoader(data_set, batch_size=32, shuffle=True)
     for images, _ in loader:
         b, c, h, w = images.shape
         nb_pixels = b * h * w
@@ -61,5 +61,6 @@ def calcMeanAndStd():
     print(fst_moment, torch.sqrt(snd_moment - fst_moment ** 2))
     return fst_moment, torch.sqrt(snd_moment - fst_moment ** 2)
 
-main()
+#main()
+calcMeanAndStd()
 
