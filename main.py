@@ -5,13 +5,11 @@
 
 import torch
 import torchvision
-import os
-from PIL import Image
-import numpy as np
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+import torch.nn as nn
 from torch.utils.data import DataLoader
 from torchvision.transforms import transforms
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def main():
@@ -25,18 +23,39 @@ def main():
     testing_set = torchvision.datasets.ImageFolder(root="Plantclassifier/Test", transform=image_transform)
 
     trainingloader = DataLoader(training_set, batch_size=32, shuffle=True)
-    testingloader = DataLoader(testing_set, batch_size=32, shuffle=True)
-    for i, mydata in enumerate(testingloader):
-        # get the inputs; data is a list of [inputs, labels]
-        inputs, labels = mydata
-        for label in labels:
-            print(training_set.classes[label])
+    testingloader = DataLoader(testing_set, batch_size=4, shuffle=True)
 
-    for i, mydata in enumerate(trainingloader):
-        # get the inputs; data is a list of [inputs, labels]
-        inputs, labels = mydata
-        for label in labels:
-            print(training_set.classes[label])
+    # Create instance of neural Net
+    net = Net()
+
+    # TODO: Define loss function + optimizer
+
+
+    # TODO: Train network
+
+
+    # TODO: Test network
+    # Display Image from the test set
+    dataiter = iter(testingloader)
+    images, labels = dataiter.next()
+
+    #print labels
+    print('GroundTruth: ', ' '.join('%5s' % testing_set.classes[labels[j]] for j in range(4)))
+    # print images
+    imshow(torchvision.utils.make_grid(images))
+
+
+
+    # how to get labels
+    # for i, mydata in enumerate(testingloader):
+    #     inputs, labels = mydata
+    #     for label in labels:
+    #         print(training_set.classes[label])
+    #
+    # for i, mydata in enumerate(trainingloader):
+    #     inputs, labels = mydata
+    #     for label in labels:
+    #         print(training_set.classes[label])
 
 
 # got output of means: tensor([0.4104, 0.4276, 0.3052]) tensor([0.2009, 0.2075, 0.1878])
@@ -61,6 +80,19 @@ def calcMeanAndStd():
     print(fst_moment, torch.sqrt(snd_moment - fst_moment ** 2))
     return fst_moment, torch.sqrt(snd_moment - fst_moment ** 2)
 
-#main()
-calcMeanAndStd()
+# functions to show an image
+def imshow(img):
+    img = img / 2 + 0.5  # unnormalize
+    npimg = img.numpy()
+    plt.imshow(np.transpose(npimg, (1, 2, 0)))
+    plt.show()
 
+
+# Define CNN
+class Net(nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+        # TODO
+
+main()
+#calcMeanAndStd()
